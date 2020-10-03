@@ -5,13 +5,13 @@ import com.julieandco.bookservice.entities.User;
 import java.util.List;
 
 public class UserDTO {
-    private List<User> users;
+    private String username;
 
-    public List<User> getUsers() {
-        return users;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

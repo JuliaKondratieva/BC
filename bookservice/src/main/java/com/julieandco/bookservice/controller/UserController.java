@@ -1,15 +1,15 @@
 package com.julieandco.bookservice.controller;
 
+import com.julieandco.bookservice.entities.User;
 import com.julieandco.bookservice.entities.dto.UserDTO;
+import com.julieandco.bookservice.entities.dto.UsersDTO;
 import com.julieandco.bookservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/api/customers")
 public class UserController {
     private final UserService userService;
 
@@ -18,10 +18,20 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<Void> saveUser(@RequestBody UserDTO userDTO){
+        String customerUsername = userDTO.getUsername();
+        User customer=new User();
+        customer.setUsername(customerUsername);
+        userService.addUser(customer);
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping
     public @ResponseBody
-    UserDTO getAllCustomers(){
-        UserDTO usersDTO = new UserDTO();
+    UsersDTO getAllCustomers(){
+        UsersDTO usersDTO = new UsersDTO();
         usersDTO.setUsers(userService.getAllUsers());
         return usersDTO;
     }

@@ -5,9 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.julieandco.bookservice.entities.Book;
 import com.julieandco.bookservice.entities.Box;
 import com.julieandco.bookservice.entities.User;
-import com.julieandco.bookservice.entities.dto.BoxDTO;
-import com.julieandco.bookservice.entities.dto.OrderDTO;
-import com.julieandco.bookservice.entities.dto.SubmitOrderDTO;
+import com.julieandco.bookservice.entities.dto.*;
 import com.julieandco.bookservice.repo.BoxRepository;
 import com.julieandco.bookservice.service.BoxService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("boxes")
+@RequestMapping("/api/boxes")
 public class BoxController {
     private final BoxService boxService;
     private final BoxRepository boxRepository;
@@ -30,26 +28,30 @@ public class BoxController {
         this.boxRepository=boxRepository;
     }
 
-    /*@PostMapping
-    public ResponseEntity<Void> deliverToBox(@RequestBody String deliverJson){
-        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-        Book deliverBook = gson.fromJson(deliverJson, Book.class);
-        Box deliverBox = gson.fromJson(deliverJson, Box.class);
+    @PostMapping("/save")
+    public ResponseEntity<Void> saveBox(@RequestBody String addressJson){
+        Box newBox=new Box();
+        newBox.setAddress(addressJson);
+        boxService.addBox(newBox);
 
-        boxService.addBook(deliverBox, deliverBook);
-
-
-        Box box = boxRepository.getOne(boxDTO.getId());
-        boxService.addBook(box, book);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public @ResponseBody
-    BoxDTO getAllBoxes(){
-        BoxDTO boxDTO = new BoxDTO();
-        boxDTO.setBooks(boxService.addBook();).setOrders(orderService.getAllOrders());
-        return ordersDTO;
-    }*/
+    /*@PostMapping("/deliver")
+    public ResponseEntity<Void> deliverToBox(@RequestBody String deliverJson){
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        BookDTO deliverBook = gson.fromJson(deliverJson, BookDTO.class);
+        Book newBook = new Book();
+        newBook.setTitle(deliverBook.getTitle());
+        newBook.setAuthor(deliverBook.getAuthor());
+        newBook.setGenre(deliverBook.getGenre());
+        newBook.setYear(deliverBook.getYear());
+        newBook.setRating(deliverBook.getRating());
+        newBook.setAvailable(deliverBook.getAvailability());
+        newBook.setNeedRepair(deliverBook.getRepair());
+        boxService.addBook(boxTo, bookAdd);
+        return ResponseEntity.ok().build();
 
+
+    }*/
 }

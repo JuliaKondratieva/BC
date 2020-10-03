@@ -1,21 +1,25 @@
 package com.julieandco.bookservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 @Table(name="bookorder")
 public class Bookorder {
     @Id
     @GeneratedValue
     private UUID id;
-    @JsonBackReference
+    //@JsonBackReference(value = "book")
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private Book book;
-    @JsonBackReference
+    //@JsonBackReference(value = "customer")
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private User customer;
@@ -30,10 +34,10 @@ public class Bookorder {
 
     public Bookorder()
     {
-        book=new Book();
+        /*book=new Book();
         customer=new User();
         deliveryState=false;
-        submitted=true;
+        submitted=true;*/
     }
 
     public Bookorder(Book book, User user){
@@ -47,6 +51,10 @@ public class Bookorder {
 
     public Book getBook(){
         return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public LocalDate getFromDate() {

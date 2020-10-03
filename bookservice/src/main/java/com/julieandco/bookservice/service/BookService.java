@@ -22,7 +22,12 @@ public class BookService {
     }
 
     @Transactional
-    public void addProduct(Book book){
+    public Book findByTitle(String title){
+        return bookRepository.findBookByTitle(title);
+    }
+
+    @Transactional
+    public void addBook(Book book){
         if(bookRepository.findBookByTitle(book.getTitle()) == null){
             bookRepository.save(book);
         }

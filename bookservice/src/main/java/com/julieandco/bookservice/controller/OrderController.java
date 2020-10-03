@@ -1,5 +1,7 @@
 package com.julieandco.bookservice.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.julieandco.bookservice.entities.Book;
 import com.julieandco.bookservice.entities.User;
 import com.julieandco.bookservice.entities.dto.OrderDTO;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("bookorders")
+@RequestMapping("/api/bookorders")
 public class OrderController {
     private final OrderService orderService;
 
@@ -21,10 +23,12 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> createOrder(@RequestBody SubmitOrderDTO submitOrder){
-        User user = submitOrder.getUser();
-        Book book = submitOrder.getBook();
+    @PostMapping("/submit")
+    public ResponseEntity<Void> submitOrder(@RequestBody String deliverJson){
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        SubmitOrderDTO deliver = gson.fromJson(deliverJson, SubmitOrderDTO.class);
+        User user = deliver.getUser();
+        Book book = deliver.getBook();
         orderService.addOrder(book, user);
         return ResponseEntity.ok().build();
     }

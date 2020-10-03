@@ -46,6 +46,8 @@ public class OrderService {
             System.out.println("You are in waiting list \n");
         }
     }
+    //@Transactional
+
 
     @Transactional(readOnly = true)
     public List<Bookorder> getAllOrders() {

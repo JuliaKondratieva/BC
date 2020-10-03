@@ -3,6 +3,7 @@ package com.julieandco.bookservice.service;
 import com.julieandco.bookservice.entities.Book;
 import com.julieandco.bookservice.entities.Box;
 import com.julieandco.bookservice.entities.Bookorder;
+import com.julieandco.bookservice.entities.User;
 import com.julieandco.bookservice.repo.BookRepository;
 import com.julieandco.bookservice.repo.BoxRepository;
 import com.julieandco.bookservice.repo.OrderRepository;
@@ -18,21 +19,32 @@ import java.util.Queue;
 public class BoxService {
     private final BookRepository bookRepository;
     private final OrderRepository orderRepository;
-    private final OrderService orderService;
+    //private final OrderService orderService;
     private final BoxRepository boxRepository;
 
-    public BoxService(BookRepository bookRepository, OrderRepository orderRepository, OrderService orderService, BoxRepository boxRepository) {
+    public BoxService(BookRepository bookRepository, OrderRepository orderRepository, BoxRepository boxRepository) {
         this.bookRepository = bookRepository;
         this.orderRepository = orderRepository;
-        this.orderService=orderService;
+        //this.orderService=orderService;
         this.boxRepository=boxRepository;
+    }
+
+    @Transactional
+    public void addBox(Box box){
+        if(boxRepository.findByAddress(box.getAddress()) == null){
+            boxRepository.save(box);
+        }
+    }
+    @Transactional
+    public Box findByAddress(String address){
+        return boxRepository.findByAddress(address);
     }
 
     @Transactional
     public void addBook(Box box, Book receivedBook) {
         boxRepository.getOne(box.getId()).getBooks().add(receivedBook);
         //box.getBooks().add(receivedBook);
-        Bookorder recOrder = new Bookorder();
+        Bookorder recOrder = null;
         List<Bookorder> byBookId = new ArrayList<>();
         List<Bookorder> nextOrderQueue = new ArrayList<>();
 

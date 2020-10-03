@@ -1,10 +1,14 @@
 package com.julieandco.bookservice.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.UUID;
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Entity
 @Table(name = "book")
 public class Book {
@@ -21,26 +25,27 @@ public class Book {
     private double rating;
     @Column
     @Enumerated(EnumType.STRING)
-    private Genre genre;
+    private Genre genre=Genre.Thriller;
     @Column
     private boolean available;
     @Column
     private boolean needRepair;
-    @JsonManagedReference
+    //@JsonManagedReference(value = "bookorder") //////////
     @OneToOne(mappedBy="book")
     private Bookorder bookorder;
-    @JsonBackReference
+    //@JsonBackReference(value = "boxId") ///////////////
+    //@JsonManagedReference(value = "boxId")//////after higher
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Box boxId;
 
     public Book() {
-        title="";
+        /*title="";
         author="";
         year=0;
         rating=0;
         available=true;
-        needRepair=false;
+        needRepair=false;*/
     }
 
     public Book(String title, String author, long year, double rating, Genre genre){
@@ -53,7 +58,7 @@ public class Book {
         this.needRepair=false;
     }
 
-    public Box getBoxId() {
+    public Box getBox() {
         return boxId;
     }
 
@@ -61,12 +66,12 @@ public class Book {
         return bookorder;
     }
 
-    public void setBookorder(Bookorder order) {
+    public void setBookorder(Bookorder bookorder) {
         this.bookorder = bookorder;
     }
 
-    public void setBoxId(Box boxId) {
-        this.boxId = boxId;
+    public void setBox(Box box) {
+        this.boxId = box;
     }
 
     public void setTitle(String title) {

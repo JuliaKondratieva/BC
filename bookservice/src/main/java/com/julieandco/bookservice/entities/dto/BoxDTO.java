@@ -7,13 +7,22 @@ import java.util.UUID;
 
 public class BoxDTO {
     private List<Book> books;
-    private UUID id;
+    private String address;
+
 
     public BoxDTO() {
     }
 
     public BoxDTO(List<Book> books) {
         this.books = books;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public List<Book> getBooks() {
@@ -24,11 +33,4 @@ public class BoxDTO {
         this.books = books;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setID(UUID id) {
-        this.id = id;
-    }
 }
